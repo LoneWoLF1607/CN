@@ -1,52 +1,91 @@
-#include<stdio.h>
-#include<string.h>
-#define N strlen(g)
-char t[128],cs[128],g[]="10001000000100001";
-int a,e,c;
-void xor()
-{
- for(c=1;c<N;c++)
- cs[c]=((cs[c]==g[c])?'0':'1');
-}
-void crc()
-{
- for(e=0;e<N;e++)
- cs[e]=t[e];
- do
- {
- if(cs[0]=='1')
- xor();
- for(c=0;c<N-1;c++)
- cs[c]=cs[c+1];
- cs[c]=t[e++];
- }while(e<=a+N-1);
-}
-int main()
-{
- printf("\nEnter poly : ");
- scanf("%s",t);
- printf("\nGenerating Polynomial is : %s",g);
- a=strlen(t);
- for(e=a;e<a+N-1;e++) t[e]='0';
- printf("\nModified t[u] is : %s",t);
- crc();
- printf("\nChecksum is : %s",cs);
- for (e=a;e<a+N-1;e++) t[e]=cs[e-a];
- printf("\nFinalCodeword is : %s",t);
- printf("\nTest Error detection 0(yes) 1(no) ? : ");
- scanf("%d",&e);
- if (e==0)
- {
- printf("Enter position where error is to inserted : ");
- scanf("%d",&e);
- t[e]=(t[e]=='0')?'1':'0';
- printf("Errorneous data: %s\n",t);
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+public class MainActivity extends AppCompatActivity {
+ private Button btnFragment1, btnFragment2;
+ private FragmentManager fragmentManager;
+ @Override
+ protected void onCreate(Bundle savedInstanceState) {
+ super.onCreate(savedInstanceState);
+ setContentView(R.layout.activity_main);
+ btnFragment1 = ndViewById(R.id.mainFragment1Button);
+ btnFragment2 = ndViewById(R.id.mainFragment2Button);
+ fragmentManager = getSupportFragmentManager();
+ btnFragment1.setOnClickListener(new View.OnClickListener() {
+ @Override
+ public void onClick(View view) {
+ Fragment fragment = new FragmentOne();
+ fragmentManager.beginTransaction().replace(R.id.mainFrameLayout1, fragment).commit();
  }
- crc();
- for(e=0;(e<N-1)&&(cs[e]!='1');e++);
- if(e<N-1)
- printf("Error detected.");
- else
- printf("No Error Detected.");
- return 0;
-} 
+ });
+ btnFragment2.setOnClickListener(new View.OnClickListener() {
+ @Override
+ public void onClick(View view) {
+ Fragment fragment = new FragmentTwo();
+ fragmentManager.beginTransaction().replace(R.id.mainFrameLayout1, fragment).commit();
+ }
+ });
+ if (savedInstanceState == null) {
+ fragmentManager.beginTransaction().replace(R.id.mainFrameLayout1, new
+FragmentOne()).commit();
+ }
+ }
+}
+
+FRAGMENT1.java
+
+import android.os.Bundle;
+import android.view.LayoutInater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.TextView;
+import android.widget.Toast;
+import androidx.fragment.app.Fragment;
+public class FragmentOne extends Fragment {
+ private Button btnFragmentOne;
+ @Override
+ public View onCreateView(LayoutInater inater, ViewGroup container, Bundle savedInstanceState) {
+ View view = inater.inate(R.layout.activity_fragment_one, container, false);
+ TextView textView = view.ndViewById(R.id.fragmentOneTextView);
+ textView.setText("Fragment One");
+ btnFragmentOne = view.ndViewById(R.id.fragmentOneButton);
+ btnFragmentOne.setOnClickListener(new View.OnClickListener() {
+ @Override
+ public void onClick(View view) {
+ Toast.makeText(getActivity(), "Fragment One", Toast.LENGTH_SHORT).show();
+ }
+ });
+ return view;
+ }
+}
+
+FRAGMENT2.java
+
+import android.os.Bundle;
+import android.view.LayoutInater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.TextView;
+import android.widget.Toast;
+import androidx.fragment.app.Fragment;
+public class FragmentTwo extends Fragment {
+ private Button btnFragmentTwo;
+ @Override
+ public View onCreateView(LayoutInater inater, ViewGroup container, Bundle savedInstanceState) {
+ View view = inater.inate(R.layout.activity_fragment_two, container, false);
+ TextView textView = view.ndViewById(R.id.fragmentTwoTextView);
+ textView.setText("Fragment Two");
+ btnFragmentTwo = view.ndViewById(R.id.fragmentTwobutton);
+ btnFragmentTwo.setOnClickListener(new View.OnClickListener() {
+ @Override
+ public void onClick(View view) {
+ Toast.makeText(getActivity(), "Fragment Two", Toast.LENGTH_SHORT).show();
+ }
+ });
+ return view;
+ }}
