@@ -10,8 +10,8 @@ public class MainActivity extends AppCompatActivity {
  protected void onCreate(Bundle savedInstanceState) {
  super.onCreate(savedInstanceState);
  setContentView(R.layout.activity_main);
- TextBoxId = (TextView) ndViewById(R.id.textbox);
- Click = (Button) ndViewById(R.id.button);
+ TextBoxId = (TextView)findViewById(R.id.textbox);
+ Click = (Button)findViewById(R.id.button);
  Click.setOnClickListener(new View.OnClickListener() {
  @Override
  public void onClick(View view) {
